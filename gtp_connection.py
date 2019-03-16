@@ -29,6 +29,7 @@ class GtpConnection():
         self._debug_mode = debug_mode
         self.go_engine = go_engine
         self.board = board
+        self.current_policy = None
         self.commands = {
             "protocol_version": self.protocol_version_cmd,
             "quit": self.quit_cmd,
@@ -49,7 +50,9 @@ class GtpConnection():
             "gogui-rules_side_to_move": self.gogui_rules_side_to_move_cmd,
             "gogui-rules_board": self.gogui_rules_board_cmd,
             "gogui-rules_final_result": self.gogui_rules_final_result_cmd,
-            "gogui-analyze_commands": self.gogui_analyze_cmd
+            "gogui-analyze_commands": self.gogui_analyze_cmd,
+            "policy": self.policy_cmd,
+            "policy_moves": self.policy_moves_cmd
         }
 
         # used for argument checking
@@ -61,7 +64,8 @@ class GtpConnection():
             "known_command": (1, 'Usage: known_command CMD_NAME'),
             "genmove": (1, 'Usage: genmove {w,b}'),
             "play": (2, 'Usage: play {b,w} MOVE'),
-            "legal_moves": (1, 'Usage: legal_moves {w,b}')
+            "legal_moves": (1, 'Usage: legal_moves {w,b}'),
+            "policy": (1, 'Usage: set_policy {random,rule_based}')
         }
     
     def write(self, data):
@@ -347,6 +351,30 @@ class GtpConnection():
                      "pstring/Show Board/gogui-rules_board\n"
                      )
 
+    def policy_cmd(self,args):
+        #set the policy to random or rule_based
+        if args[0] == "random":
+            self.current_policy = 0
+            self.respond("random")
+        elif args[0] == "rule_based":
+            self.current_policy = 1
+            self.respond("rule_based")
+        return
+    
+    def policy_moves_cmd(self,args):
+        #only plays random move for now
+        move = GoBoardUtil.simulate_random(self.board,self.board.current_player)
+        # answer = []
+        # #color
+        # answer[0] = int_to_color(self.board.current_player)
+        
+        #coordinate
+        coords = point_to_coord(move, self.board.size)
+        answer = format_point(coords)
+        #self.respond(answer)
+        self.respond(self.board.get_empty_points())
+        return
+
 def point_to_coord(point, boardsize):
     """
     Transform point given as board array index 
@@ -404,3 +432,7 @@ def color_to_int(c):
     color_to_int = {"b": BLACK , "w": WHITE, "e": EMPTY, 
                     "BORDER": BORDER}
     return color_to_int[c] 
+
+def int_to_color(i):
+    int_to_color = {BLACK:"b", WHITE:"w", EMPTY: "e", BORDER: "BORDER"}
+    return int_to_color[i]

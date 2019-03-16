@@ -4,7 +4,6 @@ Utility functions for Go board.
 """
 
 import numpy as np
-
 """
 Encoding of colors on and off a Go board.
 FLODDFILL is used internally for a temporary marker
@@ -176,5 +175,20 @@ class GoBoardUtil(object):
         return board2d
 
     @staticmethod
-    def simulate(board,color):
-        return eval
+    def simulate_random(board,player_original_color):
+        #input board is a temporary board
+        
+        #base case: when the game has ended
+        is_end,victor = board.check_game_end_gomoku()
+        #check who has won
+        if is_end:
+            if victor == player_original_color:
+                return 2
+            else:
+                return 0
+        #check if draw
+        move = GoBoardUtil.generate_random_move_gomoku(board)
+        if move == PASS:
+            return 1
+        board.play_move_gomoku(move,board.current_player)
+        return GoBoardUtil.simulate_random(board,player_original_color)

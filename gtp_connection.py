@@ -355,25 +355,30 @@ class GtpConnection():
         #set the policy to random or rule_based
         if args[0] == "random":
             self.current_policy = 0
-            self.respond("random")
+            self.respond()
         elif args[0] == "rule_based":
             self.current_policy = 1
-            self.respond("rule_based")
+            self.respond()
         return
     
     def policy_moves_cmd(self,args):
-        #only plays random move for now
-        move = GoBoardUtil.simulate_random(self.board,self.board.current_player)
-        # answer = []
-        # #color
-        # answer[0] = int_to_color(self.board.current_player)
-        
-        #coordinate
-        coords = point_to_coord(move, self.board.size)
-        answer = format_point(coords)
-        #self.respond(answer)
-        self.respond(self.board.get_empty_points())
-        return
+        if self.current_policy == 0:
+            #only plays random move for now
+            move = self.go_engine.simulate_random(self.board,self.board.current_player)
+            # answer = []
+            # #color
+            # answer[0] = int_to_color(self.board.current_player)
+            
+            #coordinate
+            coords = point_to_coord(move, self.board.size)
+            answer = format_point(coords)
+            self.respond("Random {}".format(answer))
+            #self.respond(self.board.get_empty_points())
+            return
+        else:
+            #####Fill in here#####
+            self.respond(self.board.get_empty_points())
+            return
 
 def point_to_coord(point, boardsize):
     """

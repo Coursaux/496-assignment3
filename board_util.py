@@ -192,3 +192,8 @@ class GoBoardUtil(object):
             return 1
         board.play_move_gomoku(move,board.current_player)
         return GoBoardUtil.simulate_random(board,player_original_color)
+    
+    @staticmethod
+    def simulate_rule_based(board,player_original_color):
+        #####Fill in here#####
+        return

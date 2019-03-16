@@ -174,3 +174,7 @@ class GoBoardUtil(object):
             start = goboard.row_start(row + 1)
             board2d[row, :] = goboard.board[start : start + size]
         return board2d
+
+    @staticmethod
+    def simulate(board,color):
+        return eval

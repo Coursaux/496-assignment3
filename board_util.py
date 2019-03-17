@@ -133,6 +133,53 @@ class GoBoardUtil(object):
         np.random.shuffle(moves)
         return moves[0]
 
+    @staticmethod
+    def generate_rule_move_gomoku(board, color):
+        """
+        Generate a  move for the game of Gomoku.
+        """
+        moves = board.get_empty_points()
+        if len(moves) == 0:
+            return PASS
+        count = 0
+        # rule 1
+        for move in moves:
+            b = board.copy()
+            b.play_move_gomoku(move, color)
+            win, winner = b.check_game_end_gomoku()
+            if win and winner == color:
+                return move
+        # rule 2
+        for move in moves:
+            b = board.copy()
+            b.play_move_gomoku(move, board.opponent(color))
+            win, winner = b.check_game_end_gomoku()
+            if win and winner == board.opponent(color):
+                return move
+        # rule 3
+        for m in moves:
+            b = board.copy
+            b.play_move_gomoku(m, color)
+            for move in moves:
+                bo = board.copy
+                bo.play_move_gomoku(move, color)
+                win, winner = bo.check_game_end_gomoku()
+                if win and winner == color:
+                    return move
+        # rule 4
+        for m in moves:
+            b = board.copy
+            b.play_move_gomoku(m, board.opponent(color))
+            for move in moves:
+                bo = board.copy
+                bo.play_move_gomoku(move, board.opponent(color))
+                win, winner = bo.check_game_end_gomoku()
+                if win and winner == board.opponent(color):
+                    return move
+        # rule 5
+        return generate_random_move_gomoku(board)
+
+
     @staticmethod       
     def generate_random_move(board, color, use_eye_filter):
         """
@@ -175,7 +222,7 @@ class GoBoardUtil(object):
         return board2d
 
     @staticmethod
-    def simulate_random(board,player_original_color):
+    def simulate_random(board, player_original_color):
         #input board is a temporary board
         
         #base case: when the game has ended
@@ -194,6 +241,21 @@ class GoBoardUtil(object):
         return GoBoardUtil.simulate_random(board,player_original_color)
     
     @staticmethod
-    def simulate_rule_based(board,player_original_color):
-        #####Fill in here#####
-        return
+    def simulate_rule_based(board, player_original_color):
+        #input board is a temporary board
+        
+        #base case: when the game has ended
+        is_end,victor = board.check_game_end_gomoku()
+        #check who has won
+        if is_end:
+            if victor == player_original_color:
+                return 2
+            else:
+                return 0
+        #check if draw
+        move = GoBoardUtil.generate_random_move_gomoku(board)
+        if move == PASS:
+            return 1
+        move = GoBoardUtil.generate_rule_move_gomoku(board, player_original_color)
+        board.play_move_gomoku(move,board.current_player)
+        return GoBoardUtil.simulate_rule_based(board,player_original_color)

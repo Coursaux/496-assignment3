@@ -44,6 +44,7 @@ class Gomoku():
                         max_winrate = score
                         best_move = move
             return best_move
+            
       def simulate_rule_based(self,board,color):
             #####Fill in here#####
             return

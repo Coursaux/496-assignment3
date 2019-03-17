@@ -377,7 +377,8 @@ class GtpConnection():
             return
         else:
             #####Fill in here#####
-            self.respond(self.board.get_empty_points())
+
+            self.respond()
             return
 
 def point_to_coord(point, boardsize):

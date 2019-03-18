@@ -362,6 +362,9 @@ class GtpConnection():
         return
     
     def policy_moves_cmd(self,args):
+        if len(self.board.get_empty_points()) == 0:
+            self.respond()
+            return
         if self.current_policy == 0:
             #only plays random move for now
             move = self.go_engine.simulate_random(self.board,self.board.current_player)

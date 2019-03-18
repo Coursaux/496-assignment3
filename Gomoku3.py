@@ -47,6 +47,7 @@ class Gomoku():
             
       def simulate_rule_based(self,board,color):
             #####Fill in here#####
+            GoBoardUtil.simulate_rule_based(board,color)
             return
     
 def run():

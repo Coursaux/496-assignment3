@@ -134,6 +134,30 @@ class GoBoardUtil(object):
         return moves[0]
 
     @staticmethod
+    @staticmethod
+    def generate_legal_moves_gomoku(board):
+        """
+        generate a list of all legal moves on the board for gomoku, where
+        all empty positions are legal.
+        """
+        moves = board.get_empty_points()
+        legal_moves = []
+        for move in moves:
+            legal_moves.append(move)
+        return legal_moves
+            
+    @staticmethod
+    def generate_random_move_gomoku(board):
+        """
+        Generate a random move for the game of Gomoku.
+        """
+        moves = board.get_empty_points()
+        if len(moves) == 0:
+            return PASS
+        np.random.shuffle(moves)
+        return moves[0]
+
+    @staticmethod
     def generate_rule_move_gomoku(board, color):
         """
         Generate a  move for the game of Gomoku.
@@ -141,43 +165,55 @@ class GoBoardUtil(object):
         moves = board.get_empty_points()
         if len(moves) == 0:
             return PASS
-        count = 0
+        moveList = []
         # rule 1
         for move in moves:
-            b = board.copy()
-            b.play_move_gomoku(move, color)
-            win, winner = b.check_game_end_gomoku()
+            board.play_move_gomoku(move, color)
+            win, winner = board.check_game_end_gomoku()
+            board[move] = EMPTY
             if win and winner == color:
-                return move
+                moveList.append(move)
+        if len(moveList) > 0:
+            return "Win", moveList
+
         # rule 2
         for move in moves:
-            b = board.copy()
-            b.play_move_gomoku(move, board.opponent(color))
-            win, winner = b.check_game_end_gomoku()
+            board.play_move_gomoku(move, board.opponent(color))
+            win, winner = board.check_game_end_gomoku()
+            board[move] = EMPTY
             if win and winner == board.opponent(color):
-                return move
+                moveList.append(move)
+        if len(moveList) > 0:
+            return "BlockWin", moveList
+
         # rule 3
         for m in moves:
-            b = board.copy
-            b.play_move_gomoku(m, color)
+            board.play_move_gomoku(m, color)
             for move in moves:
-                bo = board.copy
-                bo.play_move_gomoku(move, color)
-                win, winner = bo.check_game_end_gomoku()
+                board.play_move_gomoku(move, color)
+                win, winner = board.check_game_end_gomoku()
+                board[move] = EMPTY
                 if win and winner == color:
-                    return move
+                    moveList.append(move)
+            board[m] = EMPTY
+        if len(moveList) > 0:
+            return "OpenFour", moveList
+
         # rule 4
         for m in moves:
-            b = board.copy
-            b.play_move_gomoku(m, board.opponent(color))
+            board.play_move_gomoku(m, board.opponent(color))
             for move in moves:
-                bo = board.copy
-                bo.play_move_gomoku(move, board.opponent(color))
-                win, winner = bo.check_game_end_gomoku()
+                board.play_move_gomoku(move, board.opponent(color))
+                win, winner = board.check_game_end_gomoku()
+                board[move] = EMPTY
                 if win and winner == board.opponent(color):
-                    return move
+                    moveList.append(move)
+            board[m] = EMPTY
+        if len(moveList) > 0:
+            return "BlockOpenFour", moveList
+
         # rule 5
-        return generate_random_move_gomoku(board)
+        return "Random", board.get_empty_points()
 
 
     @staticmethod       

@@ -262,14 +262,14 @@ class GtpConnection():
             else:
                 self.respond("resign")
             return
-        move = self.go_engine.get_move(self.board, color)
-        if move == PASS:
+        move = self.go_engine.simulate_rule_based(self.board, color)
+        if move == 'PASS':
             self.respond("pass")
             return
-        move_coord = point_to_coord(move, self.board.size)
+        move_coord = point_to_coord(move[1], self.board.size)
         move_as_string = format_point(move_coord)
-        if self.board.is_legal_gomoku(move, color):
-            self.board.play_move_gomoku(move, color)
+        if self.board.is_legal_gomoku(move[1], color):
+            self.board.play_move_gomoku(move[1], color)
             self.respond(move_as_string)
         else:
             self.respond("illegal move: {}".format(move_as_string))
@@ -385,7 +385,7 @@ class GtpConnection():
             coords = point_to_coord(move, self.board.size)
             answer = format_point(coords)
             self.respond("{} {}".format(rule,answer))
-            # self.respond(move)
+            #self.respond(self.board.board)
             return
 
 def point_to_coord(point, boardsize):

@@ -48,6 +48,8 @@ class Gomoku():
             
       def simulate_rule_based(self,board,color):
             #####Fill in here#####
+            if len(GoBoardUtil.generate_legal_moves(board,color)) == 0:
+                  return 'PASS'
             temp_board = board.copy()
             rule,move = GoBoardUtil.generate_rule_move_gomoku(temp_board,color)
             if rule != "Random":

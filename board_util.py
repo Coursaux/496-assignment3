@@ -215,7 +215,7 @@ class GoBoardUtil(object):
             return "BlockOpenFour", moveList
 
         # rule 5
-        return "Random", moveList
+        return "Random", moves
 
 
     @staticmethod       

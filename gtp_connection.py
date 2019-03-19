@@ -362,6 +362,7 @@ class GtpConnection():
         return
     
     def policy_moves_cmd(self,args):
+
         if len(self.board.get_empty_points()) == 0:
             self.respond()
             return
@@ -381,10 +382,10 @@ class GtpConnection():
             return
         else:
             #####Fill in here#####
-            move = self.go_engine.simulate_rule_based(self.board,self.board.current_player)
+            rule,move = self.go_engine.simulate_rule_based(self.board,self.board.current_player)
             coords = point_to_coord(move, self.board.size)
             answer = format_point(coords)
-            self.respond("rule{}".format(answer))
+            self.respond([rule,answer])
             return
 
 def point_to_coord(point, boardsize):

@@ -47,8 +47,12 @@ class Gomoku():
             
       def simulate_rule_based(self,board,color):
             #####Fill in here#####
-            GoBoardUtil.simulate_rule_based(board,color)
-            return
+            rule,move = GoBoardUtil.generate_rule_move_gomoku(board, color)
+            if rule != "empty":
+                  return rule,move
+            else:
+                  move = self.simulate_random(board,color)
+                  return "Random",move
     
 def run():
       """

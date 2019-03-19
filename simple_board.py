@@ -350,6 +350,11 @@ class SimpleGoBoard(object):
         self.current_player = GoBoardUtil.opponent(color)
         return True
         
+    def undo_move_gomoku(self,point,color):
+        if point != PASS:
+            self.board[point] = EMPTY
+            self.current_player = GoBoardUtil.opponent(color)
+            
     def _point_direction_check_connect_gomoko(self, point, shift):
         """
         Check if the point has connect5 condition in a direction

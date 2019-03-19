@@ -5,6 +5,7 @@
 from gtp_connection import GtpConnection
 from board_util import GoBoardUtil
 from simple_board import SimpleGoBoard
+import numpy as np
 
 class Gomoku():
       def __init__(self):
@@ -47,8 +48,15 @@ class Gomoku():
             
       def simulate_rule_based(self,board,color):
             #####Fill in here#####
-            GoBoardUtil.simulate_rule_based(board,color)
-            return
+            temp_board = board.copy()
+            rule,move = GoBoardUtil.generate_rule_move_gomoku(temp_board,color)
+            if rule != "Random":
+                  np.random.shuffle(move)
+                  return rule,move[0]
+                  # return move
+            else:
+                  move = self.simulate_random(board,color)
+                  return "Random",move 
     
 def run():
       """

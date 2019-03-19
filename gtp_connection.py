@@ -381,12 +381,11 @@ class GtpConnection():
             return
         else:
             #####Fill in here#####
-            #move = self.go_engine.simulate_rule_based(self.board,self.board.current_player)
-            move = GoBoardUtil.generate_rule_move_gomoku(self.board, BLACK)
-            #coords = point_to_coord(move, self.board.size)
-            #answer = format_point(coords)
-            self.respond(move)
-            #self.respond("rule{}".format(answer))
+            rule,move = self.go_engine.simulate_rule_based(self.board,self.board.current_player)
+            coords = point_to_coord(move, self.board.size)
+            answer = format_point(coords)
+            self.respond("{} {}".format(rule,answer))
+            # self.respond(move)
             return
 
 def point_to_coord(point, boardsize):

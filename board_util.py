@@ -170,17 +170,17 @@ class GoBoardUtil(object):
         for move in moves:
             board.play_move_gomoku(move, color)
             win, winner = board.check_game_end_gomoku()
-            board.undo_move_gomoku(move,GoBoardUtil.opponent(color))
+            board.undo_move_gomoku(move,color)
             if win and winner == color:
                 moveList.append(move)
         return "Win", np.random.shuffle(moveList)[0]
 
         # rule 2
         for move in moves:
-            board.play_move_gomoku(move, board.opponent(color))
+            board.play_move_gomoku(move, color)
             win, winner = board.check_game_end_gomoku()
-            board.undo_move_gomoku(move,GoBoardUtil.opponent(color))
-            if win and winner == board.opponent(color):
+            board.undo_move_gomoku(move,color)
+            if win and winner == GoBoardUtil.opponent(color):
                 moveList.append(move)
         return "BlockWin", np.random.shuffle(moveList)[0]
 

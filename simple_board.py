@@ -418,3 +418,6 @@ class SimpleGoBoard(object):
                 return True, BLACK
 
         return False, None
+
+    def undo(self, point):
+        self.board[point] = EMPTY

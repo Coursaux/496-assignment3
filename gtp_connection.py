@@ -365,6 +365,7 @@ class GtpConnection():
         if len(self.board.get_empty_points()) == 0:
             self.respond()
             return
+        
         if self.current_policy == 0:
             #only plays random move for now
             move = self.go_engine.simulate_random(self.board,self.board.current_player)
@@ -380,8 +381,12 @@ class GtpConnection():
             return
         else:
             #####Fill in here#####
-
-            self.respond()
+            #move = self.go_engine.simulate_rule_based(self.board,self.board.current_player)
+            move = GoBoardUtil.generate_rule_move_gomoku(self.board, BLACK)
+            #coords = point_to_coord(move, self.board.size)
+            #answer = format_point(coords)
+            self.respond(move)
+            #self.respond("rule{}".format(answer))
             return
 
 def point_to_coord(point, boardsize):

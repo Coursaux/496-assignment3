@@ -190,6 +190,8 @@ class GoBoardUtil(object):
         for m in moves:
             board.play_move_gomoku(m, color)
             for move in moves:
+                if m == move:
+                    continue
                 board.play_move_gomoku(move, color)
                 win, winner = board.check_game_end_gomoku()
                 board.undo(move)
@@ -203,6 +205,8 @@ class GoBoardUtil(object):
         for m in moves:
             board.play_move_gomoku(m, WHITE + BLACK - color)
             for move in moves:
+                if m == move:
+                    continue
                 board.play_move_gomoku(move, WHITE + BLACK - color)
                 win, winner = board.check_game_end_gomoku()
                 board.undo(move)

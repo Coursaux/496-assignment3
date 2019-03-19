@@ -189,13 +189,15 @@ class GoBoardUtil(object):
         # rule 3
         for m in moves:
             board.play_move_gomoku(m, color)
-            new_moves = board.get_empty_points()
-            for move in new_moves:
-                board.play_move_gomoku(move, color)
-                win, winner = board.check_game_end_gomoku()
-                board.undo(move)
-                if win and winner == color:
-                    moveList.append(move)
+            # new_moves = board.get_empty_points()
+            # for move in new_moves:
+            #     board.play_move_gomoku(move, color)
+            #     win, winner = board.check_game_end_gomoku()
+            #     board.undo(move)
+            #     if win and winner == color:
+            #         moveList.append(move)
+            if board.point_check_openfour(m):
+                moveList.append(m)
             board.undo(m)
         if len(moveList) != 0:
             return "OpenFour", moveList
@@ -203,13 +205,15 @@ class GoBoardUtil(object):
         # rule 4
         for m in moves:
             board.play_move_gomoku(m, WHITE+BLACK-color)
-            new_moves = board.get_empty_points()
-            for move in new_moves:
-                board.play_move_gomoku(move, WHITE+BLACK-color)
-                win, winner = board.check_game_end_gomoku()
-                board.undo(move)
-                if win and winner == WHITE+BLACK-color:
-                    moveList.append(move)
+            # new_moves = board.get_empty_points()
+            # for move in new_moves:
+            #     board.play_move_gomoku(move, WHITE+BLACK-color)
+            #     win, winner = board.check_game_end_gomoku()
+            #     board.undo(move)
+            #     if win and winner == WHITE+BLACK-color:
+            #         moveList.append(move)
+            if board.point_check_openfour(m):
+                moveList.append(m)
             board.undo(m)
         if len(moveList) != 0:
             return "BlockOpenFour", moveList

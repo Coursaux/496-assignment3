@@ -419,5 +419,57 @@ class SimpleGoBoard(object):
 
         return False, None
 
+    def _point_direction_check_openfour(self,point,shift):
+        color = self.board[point]
+        count = 1
+        d = shift
+        p = point
+        end_one = False
+        end_two = False
+        while True:
+            p = p+d
+            if self.board[p] == color:
+                count = count+1
+            elif self.board[p] == EMPTY:
+                end_one = True
+                break
+            else:
+                break
+        d = -d
+        p = point
+        while True:
+            p = p+d
+            if self.board[p] == color:
+                count = count+1
+            elif self.board[p] == EMPTY:
+                end_two = True
+                break
+            else:
+                break
+        return end_one and end_two and (count>=4)
+
+    def point_check_openfour(self,point):
+        """
+            Check if the point causes the game end for the game of Gomoko.
+            """
+        # check horizontal
+        if self._point_direction_check_openfour(point, 1):
+            return True
+        
+        # check vertical
+        if self._point_direction_check_openfour(point, self.NS):
+            return True
+        
+        # check y=x
+        if self._point_direction_check_openfour(point, self.NS + 1):
+            return True
+        
+        # check y=-x
+        if self._point_direction_check_openfour(point, self.NS - 1):
+            return True
+        
+        return False
+
+
     def undo(self, point):
         self.board[point] = EMPTY
